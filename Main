@@ -1,0 +1,136 @@
+import java.util.Scanner;
+
+public class Main {
+
+    static class Contact {
+        String name;
+        String phoneNumber;
+
+        Contact(String name, String phoneNumber) {
+            this.name = name;
+            this.phoneNumber = phoneNumber;
+        }
+    }
+
+    static Contact[] contacts = new Contact[100];
+    static int contactCount = 0;
+
+    public static void main(String[] args) {
+        System.out.println("Welcome to your Phonebook!");
+
+        contacts[0] = new Contact("Zhoro Klimatik", "0883995678");
+        contacts[1] = new Contact("Ivan, Policai", "0897113409");
+        contactCount = 2;
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nPhonebook Menu:");
+            System.out.println("1. Show All Contacts");
+            System.out.println("2. Add New Contact");
+            System.out.println("3. Update Existing Contact");
+            System.out.println("4. Delete Contact");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option (1-5): ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice == 1) {
+                showContacts();
+            } else if (choice == 2) {
+                addContact(scanner);
+            } else if (choice == 3) {
+                updateContact(scanner);
+            } else if (choice == 4) {
+                deleteContact(scanner);
+            } else if (choice == 5) {
+                System.out.println("Goodbye!");
+                break;
+            } else {
+                System.out.println("Invalid option. Please choose again.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static void showContacts() {
+        if (contactCount == 0) {
+            System.out.println("No contacts in the phonebook.");
+        } else {
+            System.out.println("Contacts List:");
+            for (int i = 0; i < contactCount; i++) {
+                System.out.println((i + 1) + ". " + contacts[i].name + " - " + contacts[i].phoneNumber);
+            }
+        }
+    }
+
+    private static void addContact(Scanner scanner) {
+        if (contactCount >= 100) {
+            System.out.println("The phonebook is full. Cannot add more contacts.");
+            return;
+        }
+
+        System.out.print("Enter contact name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter contact phone number: ");
+        String phoneNumber = scanner.nextLine();
+
+      
+        if (phoneNumber.length() == 10) {
+            contacts[contactCount] = new Contact(name, phoneNumber);
+            contactCount++;
+            System.out.println("Contact added successfully.");
+        } else {
+            System.out.println("Invalid phone number format. Please ensure it is exactly 10 characters.");
+        }
+    }
+
+    private static void updateContact(Scanner scanner) {
+        System.out.print("Enter the name of the contact to update: ");
+        String name = scanner.nextLine();
+        boolean found = false;
+
+        for (int i = 0; i < contactCount; i++) {
+            if (contacts[i].name.equalsIgnoreCase(name)) {
+                System.out.print("Enter the new phone number: ");
+                String newPhoneNumber = scanner.nextLine();
+                // Validate the new phone number
+                if (newPhoneNumber.length() == 10) {
+                    contacts[i].phoneNumber = newPhoneNumber;
+                    System.out.println("Contact updated successfully.");
+                } else {
+                    System.out.println("Invalid phone number format. Please ensure it is exactly 10 characters.");
+                }
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Contact not found.");
+        }
+    }
+
+    private static void deleteContact(Scanner scanner) {
+        System.out.print("Enter the name of the contact to delete: ");
+        String name = scanner.nextLine();
+        boolean found = false;
+
+        for (int i = 0; i < contactCount; i++) {
+            if (contacts[i].name.equalsIgnoreCase(name)) {
+                for (int j = i; j < contactCount - 1; j++) {
+                    contacts[j] = contacts[j + 1];
+                }
+                contacts[contactCount - 1] = null;
+                contactCount--;
+                System.out.println("Contact deleted successfully.");
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("No such contact.");
+        }
+    }
+}
