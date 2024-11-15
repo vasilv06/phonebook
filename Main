@@ -96,7 +96,8 @@ public class Main {
             if (contacts[i].name.equalsIgnoreCase(name)) {
                 System.out.print("Enter the new phone number: ");
                 String newPhoneNumber = scanner.nextLine();
-                // Validate the new phone number
+
+
                 if (newPhoneNumber.length() == 10) {
                     contacts[i].phoneNumber = newPhoneNumber;
                     System.out.println("Contact updated successfully.");
